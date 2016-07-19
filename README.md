@@ -6,6 +6,8 @@ Style Guide for SQL Server Development for VPIDEV databases
 1. [Naming](#naming)
 1. [Standard Field Sizes](#standard-field-sizes)
 1. [Comments](#comments)
+1. [Table Design](#table-design)
+1. [Security](#security)
 
 
 ## Naming
@@ -283,9 +285,204 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?* Providing a comment makes it much simpler to compare database schemas between servers
 
-*Why?*  Quickly diagnose issues - can see quickly if problem is likely due to a recent change
+*Why?* Quickly diagnose issues - can see quickly if problem is likely due to a recent change
+
+**[Back to top](#table-of-contents)**
 
 
+1. [Table Design](#table-design)
+
+
+## Table Design
+
+### Standard Fields
+
+###### [Style [S035](#style-s035)]
+
+- All tables must contain a integer primary key field
+
+*Why?* Enforce Data integrity through PK-FK relationships
+
+*Why?* Provide a reliable mechanism for querying / deleting a single record
+
+*Why?* Candidate Keys are likely to change in the future
+
+###### [Style [S036](#style-s036)]
+
+- Tables should be clustered on the primary key field
+
+*Why?* display of records from new -> old based on integer keys is the easiest default
+
+*Why?* The primary key becomes a pseudo "record number" which is useful in a variety of contexts - not necessarily in application logic, but in adminstration tasks e.g. select the next 10 records after key 10000
+
+###### [Style [S037](#style-s037)]
+
+- Each table must include a Date_Created field, with a default of GetDate()
+
+*Why?* Record creation time is always useful information to have
+
+*Why?* Using a default means there is no situation where the program administrator forgets to set the field values
+
+###### [Style [S038](#style-s038)]
+
+- Each table must include a Date_Modified field, set via an update trigger
+
+*Why?* Record modifciation time is always useful information to have
+
+*Why?* Using a trigger means there is no situation where the program administrator forgets to set the field values
+
+### Normalization
+
+###### [Style [S039](#style-s039)]
+
+- OLTP Tables should generally be in [3rd Normal Form](https://en.wikipedia.org/wiki/Third_normal_form) or higher
+
+*Why?* Reduce duplication of data and update/deletion anomalies
+
+###### [Style [S040](#style-s040)]
+
+- Enforce referential integrity (on update/insert/delete) between all related tables
+
+*Why?* Requires database to be in a consistent state at all times.  
+
+*Why?* Once data inconsistency errors are introduced they are unlikly to be fixed without a great amount of effort.  
+
+*Why?* lack of RF will cause side effects throughout the system, and very likely long after the change was made...
+
+### Auditing
+
+###### [Style [S041](#style-s041)]
+
+- Establish audit tables for each table
+    - Table should be a structure copy of the source table
+    - Each update/insert/delete should store an entire copy of the current record values
+    - Audit tables should be populate via triggers
+    - Format:  AUD.<source schema>_<Source Table Name>
+*Why?* Important to have a history of table changes for administration purposes
+
+*Why?* Provides protection against user error, administrator error
+
+*Why?*  Backup devices are too cumbersome for targeted restore/debugging - much simpler to perform a select against the audit table
+
+### Patterns
+
+###### [Style [S042](#style-s042)]
+
+- Establish lookup tables for all dropdown / type information
+
+*Why?* Want a reliable source of information for populating list elements for user selection
+
+
+###### [Style [S043](#style-s043)]
+
+- Keep Table Columns narrow, ideally under 10-20 columns
+
+*Why?* Many columns is a code smell - usally a sign that proper normalization hasn't taken place
+
+*Why?* Excessive columns by design usually leads to additional database migrations, as new fields are frequently added
+
+###### [Style [S044](#style-s044)]
+
+- Break complex single entities into several 1:1 tables
+
+*Why?* Entities often have several discrete sections that are only related by the primary key. Keeping these separate keeps things tidy and the database simpler
+
+*Why?* Makes the database less sparse - if no information for the given entity, do not need to create a placeholder record. (e.g. if no address for a customer, do need to add null values to the address table...)
+
+###### [Style [S045](#style-s045)]
+
+- Use key-value structures for highly detailed minutiae in the form of <entity table> - > <entity - type detail> -> <Type definition> 
+    - For example, if we want to record 25 custom properties for an entity, add 25 detail records to the key/value detail table
+
+*Why?* Many business situations call for storing a large number of domain-specific data points. 
+
+*Why?* Add new data points is simply a matter of adding a record to the type table
+
+*Why?* Encourages design of flexible user interfaces
+
+###### [Style [S046](#style-s046)]
+
+- use a common structure for phone, email, address data
+    - All entities requring a phone number will share the same table
+
+*Why?* DRY - Do Not Repeat yourself.  
+
+*Why?* Consistent format for phone numbers, addresses in database
+
+###### [Style [S047](#style-s047)]
+
+- Set up a standard view for core system entities, e.g. Customer, Product, etc.
+    - should include all relevant lookup table data
+
+*Why?* saves time looking up basic information by avoiding writing joins
 
 
 **[Back to top](#table-of-contents)**
+
+
+## Security
+
+### Security
+
+###### [Style [S048](#style-s048)]
+
+- Non-adminstrators should not have direct update/delete/insert permissions to database
+
+*Why?* Prevents accidental / unintentional updates by novice users
+
+*Why?* Prevents malicious/intentional damage to the database
+
+###### [Style [S049](#style-s049)]
+
+- Non-developers should not have select permission to OLTP database
+
+*Why?* Users could cause blocking operations
+
+*Why?* Users writing inefficient queries can slow down entire server
+
+*Why?* Gives direct knowledge of table structure / internals to the user, making future migrations more difficult (user may need to update dozens of their personal queries reports)
+
+###### [Style [S050](#style-s050)]
+
+- users should be provided an OLAP / Datawarehouse for manual queries
+
+*Why?* slow queries will not impact OLTP operations
+
+*Why?* Provides a natural interface that can change slowly as to not break user queries
+
+
+###### [Style [S051](#style-s051)]
+
+- OLTP access should be handled thru stored procedures, running under user credentials
+
+*Why?* Hides database details
+
+*Why?* Allows logging of user details via credentials
+
+*Why?* Stored procedures make database migrations simpler as the procedures themselves serve as an interface
+
+###### [Style [S052](#style-s052)]
+
+- Third-Party software should *never* access or push data directly to the primary OLTP system
+
+*Why?* Must be able to change the OLTP database without breaking interface to external system
+
+*Why?* Often difficult, expensive, or impossible to modify third-party ETL tasks.  Better to assume that the interface designed *never* changes, and this is impossible to achieve when direct OLTP access is given
+
+###### [Style [S053](#style-s053)]
+
+- Special databases should be established for application / situations that need direct access to OLTP data
+
+*Why?* Many systems are unable to work with views, sprocs properly and will "require" direct table access
+
+*Why?* Prevents third party app from slowing down the primary OLTP database
+
+*Why?* Allows flexibility in deployment - can be offline, at a remote site, on local computer connected to machinary, etc. 
+
+###### [Style [S054](#style-s054)]
+
+- Employ a test / staging server for testing all administration work
+
+*Why?* Verify expected operation on real data that isn't live
+
+*Why?* Allow any developer to fix a data issue - the developer simply needs to verify the update operations and send a script to an administrator
