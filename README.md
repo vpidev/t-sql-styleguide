@@ -18,7 +18,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 - Do not abbreviate names - use full english word
 
-*Why?*: Abbreviations are ambigious, hard to read, and difficult for new developers to understand
+*Why?*: Abbreviations are ambiguous, hard to read, and difficult for new developers to understand
 
 ###### [Style [S002](#style-s002)]
 
@@ -39,9 +39,9 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ###### [Style [S004](#style-s004)]
 
-- Table names should be singlular, e.g. Production_Batch instead of Production_Batches
+- Table names should be singular, e.g. Production_Batch instead of Production_Batches
 
-*Why?*: Consistency - Querying a Purchase_Order, should not need to think about whether this table is singluar or plural
+*Why?*: Consistency - Querying a Purchase_Order, should not need to think about whether this table is singular or plural
 
 ### Field Names
 
@@ -51,13 +51,13 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?*: Easily identify the column that uniquely identifies a record
 
-*Why?*: unambigous column names during joins
+*Why?*: unambiguous column names during joins
 
 ###### [Style [S006](#style-s006)]
 
 - Foreign Key Fields should match the primary key name, include _FK at the end of the field name in place of _PK
 
-*Why?*: unambigous column names during joins
+*Why?*: unambiguous column names during joins
 
 ###### [Style [S007](#style-s007)]
 
@@ -91,7 +91,7 @@ Style Guide for SQL Server Development for VPIDEV databases
         - Update
         - Delete
         - Get_By_<descriptor> - secondary key as main sproc parameter
-        - Get_By_Key -primary key is the main sproc paramenter
+        - Get_By_Key -primary key is the main sproc parameter
         - List - return full list of items, common with lookup tables
 
 ###### [Style [S011](#style-s011)]
@@ -143,7 +143,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 - Job Name should aim to use existing table, sproc, or SSIS Package names
 
-*Why?*: Make deployment, debugging, administration easier by being consisent and mimnimze the number of handles in the system.  
+*Why?*: Make deployment, debugging, administration easier by being consistent and mimnimze the number of handles in the system.  
 
 ###### [Style [S019](#style-s019)]
 
@@ -222,7 +222,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ###### [Style [S028](#style-s028)]
 
-- Use `varchar(25)` for strings 1-25 charcters
+- Use `varchar(25)` for strings 1-25 characters
 
 *Why?* Reduce unnecessary migrations to widen fields
 
@@ -275,7 +275,7 @@ Style Guide for SQL Server Development for VPIDEV databases
  --********************************************************************************
 ```
 
-*Why?*  Identify source of sproc without relying on audting mechanisms 
+*Why?*  Identify source of sproc without relying on auditing mechanisms 
 
 *Why?* Place to provide summary information about the sproc
 
@@ -338,7 +338,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 - Each table must include a Date_Modified field, set via an update trigger
 
-*Why?* Record modifciation time is always useful information to have
+*Why?* Record modification time is always useful information to have
 
 *Why?* Using a trigger means there is no situation where the program administrator forgets to set the field values
 
@@ -356,7 +356,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?* Requires database to be in a consistent state at all times.  
 
-*Why?* Once data inconsistency errors are introduced they are unlikly to be fixed without a great amount of effort.  
+*Why?* Once data inconsistency errors are introduced they are unlikely to be fixed without a great amount of effort.  
 
 *Why?* lack of RF will cause side effects throughout the system, and very likely long after the change was made...
 
@@ -368,7 +368,8 @@ Style Guide for SQL Server Development for VPIDEV databases
     - Table should be a structure copy of the source table
     - Each update/insert/delete should store an entire copy of the current record values
     - Audit tables should be populate via triggers
-    - Format:  AUD.<source schema>_<Source Table Name>
+    - Format: `AUD.<source schema>_<Source Table Name>`
+
 *Why?* Important to have a history of table changes for administration purposes
 
 *Why?* Provides protection against user error, administrator error
@@ -388,7 +389,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 - Keep Table Columns narrow, ideally under 10-20 columns
 
-*Why?* Many columns is a code smell - usally a sign that proper normalization hasn't taken place
+*Why?* Many columns is a code smell - usually a sign that proper normalization hasn't taken place
 
 *Why?* Excessive columns by design usually leads to additional database migrations, as new fields are frequently added
 
@@ -414,7 +415,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 ###### [Style [S046](#style-s046)]
 
 - use a common structure for phone, email, address data
-    - All entities requring a phone number will share the same table
+    - All entities requiring a phone number will share the same table
 
 *Why?* DRY - Do Not Repeat yourself.  
 
@@ -437,7 +438,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ###### [Style [S048](#style-s048)]
 
-- Non-adminstrators should not have direct update/delete/insert permissions to database
+- Non-administrators should not have direct update/delete/insert permissions to database
 
 *Why?* Prevents accidental / unintentional updates by novice users
 
@@ -488,7 +489,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?* Prevents third party app from slowing down the primary OLTP database
 
-*Why?* Allows flexibility in deployment - can be offline, at a remote site, on local computer connected to machinary, etc. 
+*Why?* Allows flexibility in deployment - can be offline, at a remote site, on local computer connected to machinery, etc. 
 
 ###### [Style [S054](#style-s054)]
 
