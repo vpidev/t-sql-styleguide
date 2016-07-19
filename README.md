@@ -11,20 +11,20 @@ Style Guide for SQL Server Development for VPIDEV databases
 ## Naming
 
 ### Naming Guidelines
-###### [Style [Y001](#style-y001)]
+###### [Style [S001](#style-s001)]
 
 - Do not abbreviate names - use full english word
 
 *Why?*: Abbreviations are ambigious, hard to read, and difficult for new developers to understand
 
-###### [Style [Y001](#style-y001)]
+###### [Style [S002](#style-s002)]
 
 - Capitalize the first letter of each word, and separate words by underscores
 
 *Why?*: SQL code is not case sensitive, and underscores ensure words are readable
 
 ### Table Names
-###### [Style [Y002](#style-y002)]
+###### [Style [S003](#style-s003)]
 
 - All tables should include the schema, dbo is not to be used
  in the table name
@@ -33,14 +33,14 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?*: Schema names keep logic areas organized
 
-###### [Style [Y002](#style-y002)]
+###### [Style [S004](#style-s004)]
 
 - Table names should be singlular, e.g. Production_Batch instead of Production_Batches
 
 *Why?*: Consistency - Querying a Purchase_Order, should not need to think about whether this table is singluar or plural
 
 ### Field Names
-###### [Style [Y003](#style-y003)]
+###### [Style [S005](#style-s005)]
 
 - Primary Key Fields should include _PK at the end of the field name
 
@@ -48,13 +48,13 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?*: unambigous column names during joins
 
-###### [Style [Y003](#style-y003)]
+###### [Style [S006](#style-s006)]
 
 - Foreign Key Fields should match the primary key name, include _FK at the end of the field name in place of _PK
 
 *Why?*: unambigous column names during joins
 
-###### [Style [Y003](#style-y003)]
+###### [Style [S007](#style-s007)]
 
 - Special Foreign keys may be referenced as _XK when 
     - multiple foreign key columns point to the same primary key, e.g. `Home_Number_XK`,  `Work_Number_XK`
@@ -62,20 +62,20 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?*: Referencing as _FK may confused confuse developers when there is no matching _PK in the related table
 
-###### [Style [Y003](#style-y003)]
+###### [Style [S008](#style-s008)]
 
 - Bit fields should be prefixed with `Flag_`
 
 *Why?*: easily identify boolean/bit fields when viewing / querying tables
 
-###### [Style [Y003](#style-y003)]
+###### [Style [S009](#style-s009)]
 
 - Datetime fields should be prefixed with `Date_`
 
 *Why?*: Most date name naturally include "date" in the name, and this style ensure the date is always in the same location
 
 ### Sproc, Function Names
-###### [Style [Y004](#style-y004)]
+###### [Style [S010](#style-s010)]
 
 - Sproc format should be `<schema>.<entity name>_<action_name>`
     - Entity Name is the primary table being queried/modified by the sproc
@@ -88,7 +88,7 @@ Style Guide for SQL Server Development for VPIDEV databases
         - Get_By_Key -primary key is the main sproc paramenter
         - List - return full list of items, common with lookup tables
 
-###### [Style [Y004](#style-y004)]
+###### [Style [S011](#style-s011)]
 
 - Sprocs for auto-complete operations should use the format `<schema>.<table name>_<field_name>_Autocomplete
 
@@ -98,66 +98,66 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 
 ### View Names
-###### [Style [Y005](#style-y005)]
+###### [Style [S012](#style-s012)]
 
 - View names must begin with `View_`
 
 *Why?*: Keep view names distinct from sprocs, table names
 
 ### Schema Names
-###### [Style [Y006](#style-y006)]
+###### [Style [S013](#style-s013)]
 
 ### Constraint names
-###### [Style [Y007](#style-y007)]
+###### [Style [S014](#style-s014)]
 
 - Primary Keys must begin with `PK_`
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S015](#style-s015)]
 
 - Foreign Keys must begin with `FK_`
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S016](#style-s016)]
 
 - Unique Indexes must begin with `UX_`
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S017](#style-s017)]
 
 - Non-Unique Indexes must begin with `IX_`
 
 ### Job names
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S018](#style-s018)]
 
 - Job Name should aim to use existing table, sproc, or SSIS Package names
 
 *Why?*: Make deployment, debugging, administration easier by being consisent and mimnimze the number of handles in the system.  
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S019](#style-s019)]
 
 - Jobs running SSIS packages should follow the format `SSIS_<job name>`
 
 *Why?*: Identify packages moving data in/out of server
 
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S020](#style-s020)]
 
 - Jobs running SSRS subscriptions should follow the format `SSRS_<Subscription_Name`
 
 *Why?*: Group reporting operations together
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S021](#style-s021)]
 
 - Jobs running Sprocs should follow the format `Data_Processing_<sproc name>`
 
 *Why?*: Easily identify the sproc without having to open the job
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S022](#style-s022)]
 
 - Jobs running Maintenance plans should follow the format `Maintenance_Plan<maintenance plan name>`
 
 *Why?*: Maintenance Plans use SQL Agent, and need to isolate these
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S023](#style-s023)]
 
 - jobs executing system commands or sprocs for server operations should follow the format `Utility_<descriptor`
 
@@ -165,19 +165,19 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ### SSIS Package names
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S024](#style-s024)]
 
 - Project/solution names should indicate the external source of data e.g. `SalesForce` or `Epicor`
 
 *Why?*: Organize a potentially large number of external sources into separate areas
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S025](#style-s025)]
 
 - All SSIS Packages connecting to an external source should be under the same project/solution
 
 *Why?*: Easily locate all packages connected with a given external source
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S026](#style-s026)]
 
 - individual packages (*.dtsx files) should follow the format `<descriptor/table><direction>_<database>`
     - descriptor identifies the specific table(s) being accessed. use CamelCase for the descriptor
@@ -196,7 +196,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ### Decimal
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S027](#style-s027)]
 
 - Use `numeric(12,5)` for all decimal values
 
@@ -207,20 +207,20 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ### String
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S028](#style-s028)]
 
 - Use `varchar(25)` for strings 1-25 charcters
 
 *Why?* Reduce unnecessary migrations to widen fields
 
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S029](#style-s029)]
 
 - use `varchar(100)` for medium length fields
 
 *Why?* Reduce unnecessary migrations to widen fields
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S030](#style-s030)]
 
 - use `varchar(max)` for multi-line text input / storage
 
@@ -228,13 +228,13 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ### Boolean
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S031](#style-s031)]
 
 - use `bit` for boolean values
 
 ### Date
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S032](#style-s032)]
 
 - use `datetime2` for all date, time values
 
@@ -248,7 +248,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ### Sprocs
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S033](#style-s033)]
 
  - All sprocs must include a comment header in the following format
 
@@ -266,7 +266,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 *Why?* Place to provide summary information about the sproc
 
-###### [Style [Y007](#style-y007)]
+###### [Style [S034](#style-s034)]
 
  - Changes to sprocs after deployment **must** include a change note in the format:
 
