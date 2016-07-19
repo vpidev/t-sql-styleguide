@@ -96,7 +96,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 ###### [Style [S011](#style-s011)]
 
-- Sprocs for auto-complete operations should use the format `<schema>.<table name>_<field_name>_Autocomplete
+- Sprocs for auto-complete operations should use the format `<schema>.<table name>_<field_name>_Autocomplete`
 
 *Why?*: Autocomplete operations are specialized and must be fast
 
