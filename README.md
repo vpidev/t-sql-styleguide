@@ -13,6 +13,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 ## Naming
 
 ### Naming Guidelines
+
 ###### [Style [S001](#style-s001)]
 
 - Do not abbreviate names - use full english word
@@ -26,6 +27,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 *Why?*: SQL code is not case sensitive, and underscores ensure words are readable
 
 ### Table Names
+
 ###### [Style [S003](#style-s003)]
 
 - All tables should include the schema, dbo is not to be used
@@ -42,6 +44,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 *Why?*: Consistency - Querying a Purchase_Order, should not need to think about whether this table is singluar or plural
 
 ### Field Names
+
 ###### [Style [S005](#style-s005)]
 
 - Primary Key Fields should include _PK at the end of the field name
@@ -77,6 +80,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 *Why?*: Most date name naturally include "date" in the name, and this style ensure the date is always in the same location
 
 ### Sproc, Function Names
+
 ###### [Style [S010](#style-s010)]
 
 - Sproc format should be `<schema>.<entity name>_<action_name>`
@@ -100,6 +104,7 @@ Style Guide for SQL Server Development for VPIDEV databases
 
 
 ### View Names
+
 ###### [Style [S012](#style-s012)]
 
 - View names must begin with `View_`
@@ -107,9 +112,15 @@ Style Guide for SQL Server Development for VPIDEV databases
 *Why?*: Keep view names distinct from sprocs, table names
 
 ### Schema Names
+
 ###### [Style [S013](#style-s013)]
 
+- Schema names should be three-letter abbreviations of a functional area e.g. Accounting -> ACT
+
+*Why?*: Brevity
+
 ### Constraint names
+
 ###### [Style [S014](#style-s014)]
 
 - Primary Keys must begin with `PK_`
